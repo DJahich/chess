@@ -7,22 +7,22 @@ public class Pawn extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        // Validate positions
+        // определить позицию
         if (!chessBoard.checkPos(line) || !chessBoard.checkPos(column) || 
             !chessBoard.checkPos(toLine) || !chessBoard.checkPos(toColumn)) {
             return false;
         }
 
-        // Determine movement direction based on color
+        
         int direction = this.getColor().equals("White") ? 1 : -1;
 
-        // Single step forward
+        // движение на одну клетку вперед
         if (toColumn == column && toLine == line + direction &&
             chessBoard.board[toLine][toColumn] == null) {
             return true;
         }
 
-        // Double step forward from initial position
+        // возможность пройти две клетки с первой позиции
         if (toColumn == column && toLine == line + 2 * direction && 
             chessBoard.board[toLine][toColumn] == null &&
             chessBoard.board[line + direction][column] == null &&
@@ -31,7 +31,7 @@ public class Pawn extends ChessPiece {
             return true;
         }
 
-        // Diagonal capture
+        // рубить по диагонали
         return Math.abs(toColumn - column) == 1 && toLine == line + direction &&
                chessBoard.board[toLine][toColumn] != null &&
                !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor());
