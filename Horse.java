@@ -7,31 +7,27 @@ public class Horse extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
+        // Validate positions
         if (!chessBoard.checkPos(line) || !chessBoard.checkPos(column) || 
             !chessBoard.checkPos(toLine) || !chessBoard.checkPos(toColumn)) {
             return false;
         }
 
-        
+        // A piece cannot move to its current position
         if (line == toLine && column == toColumn) {
             return false;
         }
 
-        
+        // Validate knight's move
         int diffLine = Math.abs(line - toLine);
         int diffColumn = Math.abs(column - toColumn);
-        boolean isValidKnightMove = (diffLine == 2 && diffColumn == 1) || (diffLine == 1 && diffColumn == 2);
-
-        if (!isValidKnightMove) {
+        if (!((diffLine == 2 && diffColumn == 1) || (diffLine == 1 && diffColumn == 2))) {
             return false;
         }
 
-        if (chessBoard.board[toLine][toColumn] != null && 
-            chessBoard.board[toLine][toColumn].getColor().equals(this.getColor())) {
-            return false;
-        }
-
-        return true;
+        // Ensure target square is not occupied by a piece of the same color
+        ChessPiece targetPiece = chessBoard.board[toLine][toColumn];
+        return targetPiece == null || !targetPiece.getColor().equals(this.getColor());
     }
 
     @Override
@@ -39,4 +35,3 @@ public class Horse extends ChessPiece {
         return "H"; 
     }
 }
-
